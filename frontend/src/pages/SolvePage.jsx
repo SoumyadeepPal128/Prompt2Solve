@@ -37,7 +37,7 @@ function SolvePage({ problem }) {
       setLoading(false);
     }
   }
-
+//language
   const currentLang = LANGUAGES.find((l) => l.id === language);
 
   return (
