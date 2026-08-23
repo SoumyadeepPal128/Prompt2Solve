@@ -1,17 +1,45 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { executeCode } from "../api/execute.js";
+import { getProblemById } from "../api/problem.js";
 import Problem from "../components/Problem.jsx";
 import Verdict from "../components/Verdict.jsx";
 import CodeEditor from "../components/CodeEditor.jsx";
 import LANGUAGES from "../constants/languages.js";
+import usePistonMessages from "../hooks/usePistonMessages.jsx";
 
-function SolvePage({ problem }) {
+const EXECUTE_MESSAGES = [
+  "Priming job...",
+  "Compiling submission...",
+  "Running against test cases...",
+  "Comparing output...",
+];
+
+function SolvePage() {
+  const { problemId } = useParams();
+
+  const [problem, setProblem] = useState(null);
+  const [problemLoading, setProblemLoading] = useState(true);
+  const [problemError, setProblemError] = useState(null);
+
   const [language, setLanguage] = useState(LANGUAGES[0].id);
   const [code, setCode] = useState(LANGUAGES[0].boilerplate);
   const [verdict, setVerdict] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState("problem");
+
+  const loadingMessage = usePistonMessages(loading, EXECUTE_MESSAGES);
+
+  useEffect(() => {
+    setProblemLoading(true);
+    setProblemError(null);
+
+    getProblemById(problemId)
+      .then(setProblem)
+      .catch((err) => setProblemError(err.message))
+      .finally(() => setProblemLoading(false));
+  }, [problemId]);
 
   function handleLanguageChange(newLangId) {
     const lang = LANGUAGES.find((l) => l.id === newLangId);
@@ -37,8 +65,16 @@ function SolvePage({ problem }) {
       setLoading(false);
     }
   }
-//language
+
   const currentLang = LANGUAGES.find((l) => l.id === language);
+
+  if (problemLoading) {
+    return <p className="p-8 text-muted font-mono">Loading problem...</p>;
+  }
+
+  if (problemError) {
+    return <p className="p-8 text-error font-mono">Error: {problemError}</p>;
+  }
 
   return (
     <div className="flex h-screen bg-bg text-text">
@@ -96,6 +132,9 @@ function SolvePage({ problem }) {
           >
             {loading ? "Running..." : "Submit"}
           </button>
+          {loading && (
+            <p className="text-muted text-sm mt-2">{loadingMessage}</p>
+          )}
         </div>
       </div>
     </div>

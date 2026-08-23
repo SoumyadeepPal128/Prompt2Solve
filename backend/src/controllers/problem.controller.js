@@ -33,13 +33,19 @@ const deleteProblem=asyncHandler(async (req,res)=>{
 
     const problem=await Problem.findByIdAndDelete(problemId);
     if(!problem){
-        throw new ApiError(201,"Problem not found");
+        throw new ApiError(404,"Problem not found");
     }
     return res.status(200).json(new ApiResponse(200,problem,"Problem deleted successfully"));
 })
+
+const getAllProblems = asyncHandler(async (req, res) => {
+    const problems = await Problem.find({}, "title createdAt");
+    return res.status(200).json(new ApiResponse(200, problems, "Problems fetched successfully"));
+});
 
 export {
     getProblemById,
     createProblem,
     deleteProblem,
+    getAllProblems,
 }

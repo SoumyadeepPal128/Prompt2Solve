@@ -42,9 +42,14 @@ export async function runCode(lang, sourceCode, stdin = "") {
         run_timeout: 3000,
         compile_timeout: 10000,
       });
-
+      console.log("RAW COMPILE RESULT:", JSON.stringify(data.compile));
       if (data.compile && data.compile.code !== 0) {
-        return { stdout: "", stderr: data.compile.stderr || "Compilation failed", timedOut: false };
+        const compileTimedOut = data.compile.signal === "SIGKILL";
+        return {
+          stdout: "",
+          stderr: data.compile.stderr || (compileTimedOut ? "Compilation timed out" : "Compilation failed"),
+          timedOut: compileTimedOut,
+        };
       }
 
       const run = data.run || {};

@@ -1,10 +1,13 @@
 
 const LANGUAGES = [
-  {
-    id: "cpp",
-    label: "C++",
-    monacoLang: "cpp",
-    boilerplate: `#include <bits/stdc++.h>
+{
+  id: "cpp",
+  label: "C++",
+  monacoLang: "cpp",
+  boilerplate: `#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
 using namespace std;
 
 int main() {
@@ -12,7 +15,7 @@ int main() {
     return 0;
 }
 `,
-  },
+},
   {
     id: "python",
     label: "Python",

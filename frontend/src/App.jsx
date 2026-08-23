@@ -1,18 +1,20 @@
-import { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout.jsx";
 import GeneratePage from "./pages/GeneratePage.jsx";
+import ProblemsPage from "./pages/ProblemsPage.jsx";
 import SolvePage from "./pages/SolvePage.jsx";
 
 function App() {
-  const [currentProblem, setCurrentProblem] = useState(null);
-
   return (
-    <div className="min-h-screen bg-bg text-text font-mono">
-      {!currentProblem ? (
-        <GeneratePage onProblemGenerated={setCurrentProblem} />
-      ) : (
-        <SolvePage problem={currentProblem}/>
-      )}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<GeneratePage />} />
+          <Route path="/problems" element={<ProblemsPage />} />
+          <Route path="/solve/:problemId" element={<SolvePage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
