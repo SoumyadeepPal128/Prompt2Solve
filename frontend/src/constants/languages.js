@@ -25,19 +25,6 @@ if __name__ == "__main__":
 `,
   },
   {
-    id: "java",
-    label: "Java",
-    monacoLang: "java",
-    boilerplate: `import java.util.*;
-
-public class Main {
-    public static void main(String[] args) {
-        
-    }
-}
-`,
-  },
-  {
     id: "javascript",
     label: "JavaScript",
     monacoLang: "javascript",
