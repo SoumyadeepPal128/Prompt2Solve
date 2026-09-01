@@ -77,7 +77,7 @@ function SolvePage() {
   }
 
   return (
-    <div className="flex h-screen bg-bg text-text">
+    <div className="flex h-full bg-bg text-text">
       {/* Left panel */}
       <div className="w-1/2 border-r border-muted flex flex-col">
         <div className="flex border-b border-muted font-mono text-sm">

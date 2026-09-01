@@ -1,9 +1,8 @@
-// src/components/Layout.jsx
 import { Link, Outlet } from "react-router-dom";
 
 function Layout() {
   return (
-    <div className="min-h-screen bg-bg text-text font-mono flex flex-col">
+    <div className="h-screen bg-bg text-text font-mono flex flex-col">
       <nav className="flex items-center justify-between border-b border-muted px-6 py-3">
         <div className="flex items-center gap-6">
           <Link to="/" className="text-accent font-bold">
@@ -22,7 +21,7 @@ function Layout() {
         </button>
       </nav>
 
-      <main className="flex-1">
+      <main className="flex-1 overflow-hidden">
         <Outlet />
       </main>
     </div>

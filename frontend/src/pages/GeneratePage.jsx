@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Input from "../components/Input.jsx";
 import { generateProblem } from "../api/problem.js";
 
@@ -8,7 +9,8 @@ const LOADING_MESSAGES = [
   "Cleaning up job...",
 ];
 
-function GeneratePage({ onProblemGenerated }) {
+function GeneratePage() {
+  const navigate = useNavigate();
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -21,8 +23,6 @@ function GeneratePage({ onProblemGenerated }) {
     setLoading(true);
     setError(null);
 
-    // Cycle through our Piston-flavored status messages while we wait,
-    // since a real generation call can take 5-20+ seconds.
     let i = 0;
     const interval = setInterval(() => {
       i = (i + 1) % LOADING_MESSAGES.length;
@@ -31,10 +31,9 @@ function GeneratePage({ onProblemGenerated }) {
 
     try {
       const problem = await generateProblem(prompt);
-      onProblemGenerated(problem);
+      navigate(`/solve/${problem._id}`);
     } catch (err) {
       setError(err.message);
-    } finally {
       clearInterval(interval);
       setLoading(false);
       setLoadingMessage(LOADING_MESSAGES[0]);
