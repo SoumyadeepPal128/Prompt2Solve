@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Input from "../components/Input.jsx";
+import Textarea from "../components/TextArea.jsx";
 import { generateProblem } from "../api/problem.js";
 
 const LOADING_MESSAGES = [
@@ -34,6 +34,7 @@ function GeneratePage() {
       navigate(`/solve/${problem._id}`);
     } catch (err) {
       setError(err.message);
+    } finally {
       clearInterval(interval);
       setLoading(false);
       setLoadingMessage(LOADING_MESSAGES[0]);
@@ -45,13 +46,18 @@ function GeneratePage() {
       <div className="w-full max-w-2xl">
         <p className="text-muted mb-2">$ describe a problem to generate</p>
 
-        <form onSubmit={handleSubmit} className="flex gap-2">
-          <Input
+        <form onSubmit={handleSubmit} className="flex gap-2 items-end">
+          <Textarea
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             placeholder="the two sum problem"
             disabled={loading}
             autoFocus
+            rows={1}
+            onInput={(e) => {
+              e.target.style.height = "auto";
+              e.target.style.height = `${e.target.scrollHeight}px`;
+            }}
           />
           <button
             type="submit"
@@ -62,13 +68,9 @@ function GeneratePage() {
           </button>
         </form>
 
-        {loading && (
-          <p className="text-muted mt-4 text-sm">{loadingMessage}</p>
-        )}
+        {loading && <p className="text-muted mt-4 text-sm">{loadingMessage}</p>}
 
-        {error && (
-          <p className="text-error mt-4 text-sm">Error: {error}</p>
-        )}
+        {error && <p className="text-error mt-4 text-sm">Error: {error}</p>}
       </div>
     </div>
   );
