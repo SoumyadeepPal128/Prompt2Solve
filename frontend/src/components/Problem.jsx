@@ -1,12 +1,18 @@
+import ReactMarkdown from "react-markdown";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import "katex/dist/katex.min.css";
+
 function Problem({ problem }) {
   return (
-    <div className="p-6 font-sans text-text overflow-y-auto h-full">
+    <div className="p-6 font-sans text-text">
       <h1 className="text-xl font-bold font-mono mb-4">{problem.title}</h1>
 
-      {}
-      <p className="whitespace-pre-wrap leading-relaxed text-text">
-        {problem.description}
-      </p>
+      <div className="prose prose-invert prose-sm max-w-none">
+        <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
+          {problem.description}
+        </ReactMarkdown>
+      </div>
 
       {problem.testCases?.length > 0 && (
         <div className="mt-6">
