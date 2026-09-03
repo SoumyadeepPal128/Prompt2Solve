@@ -23,7 +23,7 @@ const PROBLEM_SCHEMA = {
       type: "array",
       items: { type: "string" },
       description:
-        "At least 5 sample stdin inputs, covering typical and edge cases",
+        "At least 20 sample stdin inputs, covering typical and edge cases",
     },
   },
   required: ["title", "description", "referenceSolution", "sampleInputs"],
@@ -47,7 +47,7 @@ syntactically perfect and logically correct):
 - Use only C++'s standard library.
 
 SAMPLE INPUT REQUIREMENTS:
-- Provide at least 5 sample inputs.
+- Provide at least 20 sample inputs.
 - Cover: a typical/average case, a minimum-size edge case, a case with duplicate values
   (if relevant to the problem), a case with negative numbers or boundary values (if
   relevant), and one larger case to catch performance issues.
