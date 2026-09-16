@@ -48,13 +48,13 @@ const generateProblem = asyncHandler(async (req, res) => {
 
   // Step 3: now that we have VERIFIED test cases, save the problem
   const problem = await Problem.create({
-    title: generated.title,
-    description: generated.description,
-    prompt,
-    referenceSolution: generated.referenceSolution,
-    testCases,
-    // createdBy: req.user?._id,  // add once auth is wired in
-  });
+  title: generated.title,
+  description: generated.description,
+  prompt,
+  referenceSolution: generated.referenceSolution,
+  testCases,
+  createdBy: req.user?._id, // undefined for guests - matches required: false on the schema
+});
 
   return res
     .status(201)

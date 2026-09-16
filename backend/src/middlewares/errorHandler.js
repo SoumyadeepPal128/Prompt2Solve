@@ -1,4 +1,6 @@
 export function errorHandler(err, req, res, next) {
+  console.error(err); // TEMP - shows the real stack trace in your terminal
+
   const statusCode = err.statusCode || 500;
   const message = err.message || "Something went wrong";
 
