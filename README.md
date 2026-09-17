@@ -72,3 +72,62 @@ By default, the Piston Docker image comes with **no languages installed**. You m
 mkdir piston-data
 cd piston-data
 docker run --privileged -v ${PWD}:/piston -dit -p 2000:2000 --name piston_api ghcr.io/engineer-man/piston
+```
+
+**Install the C++ runtime (One-time setup):**
+Wait a few seconds for the container to start, then run this command:
+```bash
+curl -X POST http://localhost:2000/api/v2/packages \
+-H "Content-Type: application/json" \
+-d '{"language": "gcc", "version": "10.2.0"}'
+```
+*(This may take 10-30 seconds to download. It will output a JSON response confirming the installation).*
+
+> **⚠️ Windows WSL2 / Docker Desktop Warning:** 
+> If you are running Docker Desktop on Windows with the WSL2 backend, you may encounter an issue where Piston hangs on every execution. This occurs because cgroup v2 delegation requires `systemd`, which Docker Desktop's internal WSL distro lacks. If every submission times out, the reliable fix is installing Docker Engine directly inside a standard Ubuntu WSL2 distribution (with `systemd` enabled) rather than using Docker Desktop.
+
+### 2. Backend Setup
+
+```bash
+cd backend
+npm install
+cp .env.example .env
+```
+
+Configure your `.env` file:
+```env
+PORT=4000
+MONGO_URI=your-mongodb-connection-string
+DB_NAME=prompt2solve
+GEMINI_API_KEY=your-gemini-api-key
+PISTON_API_URL=http://localhost:2000/api/v2
+ACCESS_TOKEN_SECRET=generate-a-long-random-string
+ACCESS_TOKEN_EXPIRY=1d
+REFRESH_TOKEN_SECRET=generate-a-different-long-random-string
+REFRESH_TOKEN_EXPIRY=10d
+```
+
+Start the backend:
+```bash
+npm run dev
+```
+
+### 3. Frontend Setup
+
+By default, the frontend points to the deployed ngrok tunnel. To run fully locally, update `API_BASE_URL` in `src/api/client.js` to `http://localhost:4000/api`.
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+## 🚧 Known Limitations & Roadmap
+
+* **Language Support:** Currently hardcoded to C++ for generation and execution.
+* **Exact Match Judging:** Verdicts require an exact `stdout` string match. Deterministic problems work perfectly, but problems with multiple equally valid outputs (e.g., returning any valid index pair for Two Sum) may incorrectly reject mathematically valid solutions. *Planned fix: Implement custom checker functions (Special Judge) per problem.*
+* **Code Editor:** The solve page currently uses a plain `textarea`. *Planned fix: Integrate Monaco Editor for syntax highlighting and a true IDE feel.*
+* **Execution Model:** Relies on standard `stdin/stdout` I/O rather than LeetCode's class-method signature style. 
+* **Regeneration Flow:** No UI exists yet to iteratively tweak or re-prompt a generated problem if the LLM's first attempt misses the mark.
