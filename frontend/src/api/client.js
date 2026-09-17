@@ -1,12 +1,15 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:4000/api";
+const API_BASE_URL = "https://swiftly-ground-dingbat.ngrok-free.dev/api";
 
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  headers: { "Content-Type": "application/json" },
-  withCredentials: true, // required to send/receive httpOnly cookies cross-origin
+  headers: {
+    "Content-Type": "application/json",
+    "ngrok-skip-browser-warning": "true", // bypasses the free-tier interstitial for API calls
+  },
+  withCredentials: true,
 });
 
 async function request(config) {

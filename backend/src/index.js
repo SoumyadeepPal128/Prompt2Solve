@@ -13,8 +13,8 @@ const app = express();
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:5173", // your Vite dev server
-    credentials: true, // allows cookies/auth headers later, once auth is wired in
+    origin: ["http://localhost:5173", "https://your-app-name.vercel.app"], // update after first Vercel deploy
+    credentials: true,
   })
 );
 
