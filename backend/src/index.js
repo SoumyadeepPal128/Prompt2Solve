@@ -13,11 +13,10 @@ const app = express();
 app.use(cookieParser());
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://your-app-name.vercel.app"], // update after first Vercel deploy
+    origin: ["http://localhost:5173", "https://prompt2solve.vercel.app"],
     credentials: true,
   })
 );
-
 app.use(express.json());
 
 app.get("/health", (req, res) => {
